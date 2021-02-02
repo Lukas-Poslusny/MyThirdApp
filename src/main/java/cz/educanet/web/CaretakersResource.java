@@ -3,27 +3,31 @@ package cz.educanet.web;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 
-@Path("{animals}")
+@Produces(MediaType.APPLICATION_JSON)
+@Path("animals")
 public class CaretakersResource {
 
     @Inject
     private CaretakersManager caretakersManager;
 
-    //TODO: 1/12/2021
-    // GET /caretakers/{id}     vrátí konkrétního ošetřovatele
 
     @GET    // get all caretakers
     public Response getAllCaretakers() {
-        caretakersManager.getCaretakers(); // result ignored
-        return Response.ok().build();
+        return Response.ok(caretakersManager.getCaretakers()).build();
+    }
+
+    @GET    // get specific caretaker
+    public Response getCaretaker(int id) {
+        return Response.ok(caretakersManager.getCaretaker(id)).build();
     }
 
     @POST   // creates/adds a caretaker
-    public Response addCaretaker(@QueryParam("firstName") String firstName, @QueryParam("lastName") String lastName, @QueryParam("gender") String gender) {
-        if(caretakersManager.createCaretaker(firstName, lastName, gender) == null) {
+    public Response createCaretaker(@QueryParam("firstName") String firstName, @QueryParam("lastName") String lastName, @QueryParam("gender") String gender) {
+        Caretakers tempCaretaker = caretakersManager.createCaretaker(firstName, lastName, gender);
+        if(tempCaretaker == null) {
             return Response.status(Response.Status.valueOf("Caretaker already exists!")).build();
         }
         return Response.ok("New caretaker created").build();
