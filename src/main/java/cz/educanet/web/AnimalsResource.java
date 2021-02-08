@@ -26,29 +26,32 @@ public class AnimalsResource {
     }
 
     @POST   // creates an animal
-    public Response createAnimal(@FormParam("name") String name, @FormParam("age") Integer age, @FormParam("weight") Integer weight, @FormParam("gender") String gender) {
-        Animals tempAnimal = animalsManager.createAnimal(name, age, weight, gender);
-        if (tempAnimal == null) {
-            return Response.status(Response.Status.valueOf("Animal not created.")).build();
+    public Response createAnimal(Animals a) {
+        if (a == null) {
+            return Response.status(400, "Animal not created.").build();
         }
-        return Response.ok(tempAnimal).build();
+        animalsManager.createAnimal(a.getName(), a.getAge(), a.getWeight(), a.getGender());
+        return Response.ok(a).build();
     }
 
     @PUT    // edits an animal
     @Path("{id}")
-    public Response editAnimal(Animals a, @FormParam("name") String name, @FormParam("age") Integer age, @FormParam("weight") Integer weight, @FormParam("gender") String gender) {
-        if (animalsManager.editAnimal(a, name, age, weight, gender) == null) {
-            return Response.status(Response.Status.valueOf("Input equal")).build();
+    public Response editAnimal(@PathParam("id") Integer id, Animals a) {
+        if (getAnimal(id) == null) {
+            return Response.status(400, "Animal does not exist").build();
         }
-        return Response.ok(a).build();
+        else if (animalsManager.editAnimal(id, a.getName(), a.getAge(), a.getWeight(), a.getGender()) == null) {
+            return Response.status(400, "Input unequal").build();
+        }
+        return Response.ok(getAnimal(id)).build();
     }
 
     @DELETE // deletes an animal
     @Path("{id}")
-    public Response deleteAnimal(Animals a) {
-    if (animalsManager.deleteAnimal(a)) {
+    public Response deleteAnimal(@PathParam("id") Integer id) {
+    if (animalsManager.deleteAnimal(id)) {
             return Response.ok().build();
         }
-        return Response.status(Response.Status.valueOf("Cannot delete none existent animal.")).build();
+        return Response.status(400, "Cannot delete non-existent animal.").build();
     }
 }

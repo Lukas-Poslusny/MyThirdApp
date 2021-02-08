@@ -15,27 +15,14 @@ public class AnimalsManager {
         return getAnimals().get(i);
     }
 
-    public boolean doesAnimalExist(Animals a) {
-        for (int i = 0; i < animalsList.size(); i++) {
-            if (animalsList.get(i).getName().equals(a.getName())) {
-                return true;
-            }
-        }
-        return false;
+    public void createAnimal(String name, Integer age, Integer weight, String gender) {
+        Animals tempAnimal = new Animals(name, age, weight, gender);
+        animalsList.add(tempAnimal);
     }
 
-    public Animals createAnimal(String name, Integer age, Integer weight, String gender) {
+    public Animals editAnimal(Integer id, String name, Integer age, Integer weight, String gender) {
         Animals tempAnimal = new Animals(name, age, weight, gender);
-
-        if (doesAnimalExist(tempAnimal)) {
-            return null;
-        }
-        return tempAnimal;
-    }
-
-    public Animals editAnimal(Animals a, String name, Integer age, Integer weight, String gender) {
-        Animals tempAnimal = new Animals(name, age, weight, gender);
-
+        Animals a = getAnimal(id);
         if (!a.equals(tempAnimal)) {
             return null;
         }
@@ -48,10 +35,10 @@ public class AnimalsManager {
         return a;
     }
 
-    public boolean deleteAnimal(Animals a) {
+    public boolean deleteAnimal(Integer id) {
         for(int i = 0; i < animalsList.size(); i ++) {
-            if (getAnimal(i) == a) {
-                animalsList.remove(a);
+            if (getAnimal(i) == getAnimal(id)) {
+                animalsList.remove(getAnimal(id));
                 return true;
             }
         }

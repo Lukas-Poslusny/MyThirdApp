@@ -25,19 +25,22 @@ public class CaretakersResource {
     }
 
     @POST   // creates/adds a caretaker
-    public Response createCaretaker(@QueryParam("firstName") String firstName, @QueryParam("lastName") String lastName, @QueryParam("gender") String gender) {
-        Caretakers tempCaretaker = caretakersManager.createCaretaker(firstName, lastName, gender);
-        if(tempCaretaker == null) {
-            return Response.status(Response.Status.valueOf("Caretaker already exists!")).build();
+    public Response createCaretaker(Caretakers c) {
+        if(c == null) {
+            return Response.status(400, "Caretaker not created.").build();
         }
-        return Response.ok("New caretaker created").build();
+        caretakersManager.createCaretaker(c.getFirstName(), c.getLastName(), c.getGender());
+        return Response.ok(c).build();
     }
 
     @PUT    // edits a caretaker
     @Path("{id}")
-    public Response editCaretaker(Caretakers c, @QueryParam("firstName") String firstName, @QueryParam("lastName") String lastName, @QueryParam("gender") String gender) {
-        if (caretakersManager.editCaretaker(c, firstName, lastName, gender) == null) {
-            return Response.status(Response.Status.valueOf("Input equal")).build();
+    public Response editCaretaker(@PathParam("id") Integer id, Caretakers c) {
+        if (getCaretaker(id) == null) {
+            return Response.status(400, "Caretaker does not exist").build();
+        }
+        else if (caretakersManager.editCaretaker(id, c.getFirstName(), c.getLastName(), c.getGender()) == null) {
+            return Response.status(400, "Input unequal").build();
         }
         return Response.ok().build();
     }

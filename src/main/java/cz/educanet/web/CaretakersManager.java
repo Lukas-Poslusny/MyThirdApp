@@ -18,26 +18,14 @@ public class CaretakersManager {
         return getCaretakers().get(i);
     }
 
-    public Caretakers createCaretaker(String firstName, String lastName, String gender) {
+    public void createCaretaker(String firstName, String lastName, String gender) {
         Caretakers tempUser = new Caretakers(firstName, lastName, gender);
-        if (doesCaretakerExist(tempUser)) {
-            return null;
-        }
-        return  tempUser;
+        caretakersList.add(tempUser);
     }
 
-    public boolean doesCaretakerExist(Caretakers c) {
-        for (int i = 0; i < caretakersList.size(); i++) {
-            if (caretakersList.get(i).getFullName().equals(c.getFullName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public Caretakers editCaretaker(Caretakers c, String firstName, String lastName, String gender) {
+    public Caretakers editCaretaker(Integer id, String firstName, String lastName, String gender) {
         Caretakers tempCaretaker = new Caretakers(firstName, lastName, gender);
-
+        Caretakers c = getCaretaker(id);
         if (!c.equals(tempCaretaker)) {
             return null;
         }
