@@ -1,7 +1,6 @@
 package cz.educanet.web;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 
 @ApplicationScoped

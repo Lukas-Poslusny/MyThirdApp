@@ -1,8 +1,10 @@
 package cz.educanet.web;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 
+@ApplicationScoped
 public class AnimalsManager {
 
     private final ArrayList<Animals> animalsList = new ArrayList<>();
